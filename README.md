@@ -27,5 +27,12 @@ accomplished by a helper script written in VBScript. This script will use the
 Windows Scripting Host environment to modify the system PATH without losing
 nested environment variables or merging user and system paths.
 
+## TODO
+
+* Add devivification script for testing and general fun
+* Enhance addtopath.vbs to allow user path modification and not to duplicate
+  entries
+* Figure out how to reduce installation to one step
+
 This is a work in progress.
 Caveat Emptor.
