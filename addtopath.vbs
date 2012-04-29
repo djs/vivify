@@ -5,10 +5,17 @@
 ' the system path environment, preserving nested environment variables.
 
 Set wshShell = CreateObject( "WScript.Shell" )
-Set wshSystemEnv = wshShell.Environment( "SYSTEM" )
+if WScript.Arguments.Named.Exists("user") then
+    Set wshEnv = wshShell.Environment("USER")
+    env = "user"
+else
+    Set wshEnv = wshShell.Environment( "SYSTEM" )
+    env = "system"
+end if
+
 newpaths = ""
 
-syspaths = Split(wshSystemEnv("PATH"), ";")
+syspaths = Split(wshEnv("PATH"), ";")
 for each x in syspaths
     if newpaths = "" then
         newpaths = x
@@ -27,5 +34,5 @@ for i = 0 to WScript.Arguments.Unnamed.Count - 1
     end if
 next
 
-WScript.Echo "Added " & addedpaths & " to system path"
-wshSystemEnv("PATH") = newpaths
+WScript.Echo "Added " & addedpaths & " to " & env & " path"
+wshEnv("PATH") = newpaths

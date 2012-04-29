@@ -5,6 +5,11 @@ Windows box. The goal is to produce a single command to generate a working
 python environment, which can then allow further setup to be automated in a
 reasonable scripting environment.
 
+## Quick Start
+
+Run the [bootstrapper](https://github.com/djs/vivify/raw/master/bootstrap.cmd)
+with administrator privileges.
+
 ## Installation and Use
 
 On a fresh Windows box, there are three steps required to vivify the system:
