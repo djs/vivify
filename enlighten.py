@@ -91,6 +91,7 @@ def clink():
     f.close()
 
     subprocess.check_call([os.path.basename(installer), '/passive'])
+
     f = urllib2.urlopen('https://code.google.com/p/clink/downloads/list')
     soup = BeautifulSoup(f)
     f.close()
@@ -123,6 +124,14 @@ def clink():
             print fullname
             shutil.copy(fullname, 'C:\\Program Files\\ConEmu\\ConEmu\\clink')
 
+def gvim():
+    installer = 'http://downloads.sourceforge.net/project/cream/Vim/7.3.762/gvim-7-3-762.exe'
+    f = urllib2.urlopen(installer)
+    with open(os.path.basename(installer), "wb") as local_installer:
+        local_installer.write(f.read())
+    f.close()
+
+    subprocess.check_call([os.path.basename(installer), '/S'])
 
 
 def main():
@@ -138,6 +147,7 @@ def main():
         ruby('sfx')
         conemu()
         clink()
+        gvim()
     else:
         method = globals()[args.item]
         method()
