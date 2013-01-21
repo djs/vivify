@@ -136,6 +136,16 @@ def gvim():
 
     subprocess.check_call([os.path.basename(installer), '/S'])
 
+def rapidee():
+    installer = 'http://www.rapidee.com/download/RapidEE_setup.exe'
+    f = urllib2.urlopen(installer)
+    with open(os.path.basename(installer), "wb") as local_installer:
+        local_installer.write(f.read())
+    f.close()
+
+    subprocess.check_call([os.path.basename(installer), '/S'])
+
+
 def fonts():
 
     def install_font(font):
