@@ -61,5 +61,4 @@ this:
   entries
 * Figure out how to reduce installation to one step
 
-This is a work in progress.
-Caveat Emptor.
+This is a work in progress. *Caveat Emptor.*
