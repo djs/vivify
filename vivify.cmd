@@ -5,17 +5,18 @@
 @setlocal
 @set PYTHON_SHORT_VERSION=2.7
 @set PYTHON_VERSION=2.7.3
+@set PYTHON_SUFFIX=.amd64
+@set PYWIN32_SUFFIX=-amd64
 @set PYWIN32_VERSION=218
 
-where python > NUL
+where python > NUL 2>&1
 @if %errorlevel% equ 0 goto distribute
 @echo Downloading Python %PYTHON_VERSION%...
-curl\curl http://www.python.org/ftp/python/%PYTHON_VERSION%/python-%PYTHON_VERSION%.msi > python-%PYTHON_VERSION%.msi
+curl\curl http://www.python.org/ftp/python/%PYTHON_VERSION%/python-%PYTHON_VERSION%%PYTHON_SUFFIX%.msi > python-%PYTHON_VERSION%%PYTHON_SUFFIX%.msi
 @if not errorlevel 0 goto abort
 @echo Installing...
-msiexec /passive /i python-%PYTHON_VERSION%.msi
+msiexec /passive /i python-%PYTHON_VERSION%%PYTHON_SUFFIX%.msi
 @if not errorlevel 0 goto abort
-@endlocal
 @echo Success! Installation complete.
 @echo Configuring environment variables...
 @if not defined MY_PYTHON_PATH (
@@ -32,7 +33,7 @@ curl\curl http://python-distribute.org/distribute_setup.py | python
 curl\curl --insecure https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python
 @if not errorlevel 0 goto abort
 @echo Installing pywin32
-curl\curl -L http://downloads.sourceforge.net/project/pywin32/pywin32/Build%%20%PYWIN32_VERSION%/pywin32-%PYWIN32_VERSION%.win32-py%PYTHON_SHORT_VERSION%.exe > pywin32.exe
+curl\curl -L http://downloads.sourceforge.net/project/pywin32/pywin32/Build%%20%PYWIN32_VERSION%/pywin32-%PYWIN32_VERSION%.win%PYWIN32_SUFFIX%-py%PYTHON_SHORT_VERSION%.exe > pywin32.exe
 easy_install pywin32.exe
 @if not errorlevel 0 goto abort
 
@@ -49,4 +50,4 @@ cscript addtopath.vbs /user %%MY_USER_BIN%%
 @echo Failed to install Python. You're on your own...
 
 :end
-
+@endlocal
