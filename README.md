@@ -32,6 +32,28 @@ accomplished by a helper script written in VBScript. This script will use the
 Windows Scripting Host environment to modify the system PATH without losing
 nested environment variables or merging user and system paths.
 
+# Enlighten
+
+Enlighten is a quickly-growing script I wrote to automatically install all the
+software I find necessary in order to develop and work in a Windows environment.
+
+The script functions as a very, very rudimentary package manager of sorts (a la
+easy_install ... no uninstallation!). You can specify a piece of software on the
+command line and it will install it, or specify you want to install everything:
+
+    python enlighten.py all
+
+It uses a variety of mechanisms to sort through the cruft of the internet and
+download either the latest package, or just whatever was the latest version at
+the time I added it, if that was easier.
+
+Though I'd like to keep it dependency free, this is already untrue since I use
+the life-saving BeautifulSoup4 module to de-cruft horrors like Google Code
+Hosting download links. Install dependencies after bootstrapping python like
+this:
+
+    pip install -r requirements.txt
+
 ## TODO
 
 * Add devivification script for testing and general fun
