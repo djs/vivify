@@ -145,6 +145,15 @@ def rapidee():
 
     subprocess.check_call([os.path.basename(installer), '/S'])
 
+def ctags():
+    f = urllib2.urlopen('http://downloads.sourceforge.net/project/ctags/ctags/5.8/ctags58.zip')
+    with open('ctags58.zip', 'wb') as local_zip:
+        local_zip.write(f.read())
+
+    f.close()
+
+    with zipfile.ZipFile('ctags58.zip', 'r') as myzip:
+        myzip.extract('ctags58/ctags.exe', os.path.expandvars('$MY_USER_BIN'))
 
 def fonts():
 
@@ -185,6 +194,9 @@ def main():
         conemu()
         clink()
         gvim()
+        rapidee()
+        fonts()
+        ctags()
     else:
         method = globals()[args.item]
         method()
