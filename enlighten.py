@@ -128,7 +128,7 @@ def clink():
             shutil.copy(fullname, 'C:\\Program Files\\ConEmu\\ConEmu\\clink')
 
 def gvim():
-    installer = 'http://downloads.sourceforge.net/project/cream/Vim/7.3.762/gvim-7-3-762.exe'
+    installer = 'https://bitbucket.org/djs/vim-win64/downloads/gvim73-772-win-amd64.exe'
     f = urllib2.urlopen(installer)
     with open(os.path.basename(installer), "wb") as local_installer:
         local_installer.write(f.read())
