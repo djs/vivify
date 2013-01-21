@@ -1,12 +1,15 @@
 import argparse
 from bs4 import BeautifulSoup
+import glob
 import os.path
 import platform
 import re
 import shutil
 import subprocess
 import sys
+import tarfile
 import urllib2
+import win32com.client
 import zipfile
 
 
@@ -132,6 +135,30 @@ def gvim():
     f.close()
 
     subprocess.check_call([os.path.basename(installer), '/S'])
+
+def fonts():
+
+    def install_font(font):
+        obj = win32com.client.Dispatch('Shell.Application')
+        folder = obj.Namespace(os.path.dirname(os.path.abspath(font)))
+        item = folder.ParseName(font)
+        item.InvokeVerb('Install')
+
+    tarball = 'https://fedorahosted.org/releases/l/i/liberation-fonts/liberation-fonts-ttf-2.00.1.tar.gz'
+    f = urllib2.urlopen(tarball)
+    with open(os.path.basename(tarball), "wb") as local_tarball:
+        local_tarball.write(f.read())
+    f.close()
+
+    oldpath = os.getcwd()
+    tar = tarfile.open(os.path.basename(tarball))
+    os.mkdir('liberation')
+    os.chdir('liberation')
+    tar.extractall()
+    tar.close()
+    os.chdir(os.walk('.').next()[1][0])
+    for font in glob.glob('*.ttf'):
+        install_font(font)
 
 
 def main():
