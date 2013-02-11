@@ -26,13 +26,24 @@ next
 
 addedpaths = ""
 for i = 0 to WScript.Arguments.Unnamed.Count - 1
-    newpaths = newpaths & ";" & WScript.Arguments.Unnamed.Item(i)
-    if addedpaths = "" then
-        addedpaths = WScript.Arguments.Unnamed.Item(i)
-    else
-        addedpaths = addedpaths & "; " & WScript.Arguments.Unnamed.Item(i)
-    end if
+    exists = false
+	for each x in syspaths
+	    if x = WScript.Arguments.Unnamed.Item(i) then
+	        exists = true
+	    end if
+	next
+	
+	if exists = false then	    
+		newpaths = newpaths & ";" & WScript.Arguments.Unnamed.Item(i)
+		if addedpaths = "" then
+			addedpaths = WScript.Arguments.Unnamed.Item(i)
+		else
+			addedpaths = addedpaths & "; " & WScript.Arguments.Unnamed.Item(i)
+		end if
+	end if
 next
 
-WScript.Echo "Added " & addedpaths & " to " & env & " path"
-wshEnv("PATH") = newpaths
+if addedpaths <> "" then
+	WScript.Echo "Added " & addedpaths & " to " & env & " path"
+	wshEnv("PATH") = newpaths
+end if
