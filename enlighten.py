@@ -28,9 +28,11 @@ def ruby(kit):
     f.close()
 
     rubys = sorted(soup.find_all('li', kit), reverse=True, key=lambda k: k.get_text())
-    installer = rubys[0].a['href']
+    filtered_rubys = [x for x in rubys if '-2.' not in x.a['href']]
+    installer_url = filtered_rubys[0].a['href']
+    installer = installer_url.split('?')[0]
 
-    f = urllib2.urlopen(installer)
+    f = urllib2.urlopen(installer_url)
     with open(os.path.basename(installer), "wb") as local_installer:
         local_installer.write(f.read())
 
@@ -40,7 +42,8 @@ def ruby(kit):
         subprocess.check_call([os.path.basename(installer), '/silent',
             '/tasks="assocfiles,modpath"'])
     elif kit == 'sfx':
-        os.mkdir('c:/devkit')
+        if not os.path.exists('c:/devkit'):
+            os.mkdir('c:/devkit')
         oldpath = os.getcwd()
         os.chdir('c:/devkit')
         subprocess.check_call(['7za', 'x', os.path.join(oldpath,
