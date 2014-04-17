@@ -23,7 +23,9 @@ def platform_check():
         sys.exit(1)
 
 def ruby(kit):
-    f = urllib2.urlopen('http://rubyinstaller.org/downloads/')
+    opener = urllib2.build_opener()
+    opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+    f = opener.open('http://rubyinstaller.org/downloads/')
     soup = BeautifulSoup(f)
     f.close()
 
@@ -47,7 +49,7 @@ def ruby(kit):
         oldpath = os.getcwd()
         os.chdir('c:/devkit')
         subprocess.check_call(['7za', 'x', os.path.join(oldpath,
-            os.path.basename(installer))])
+            os.path.basename(os.path.join(oldpath,installer)))])
         subprocess.check_call(['c:/ruby193/bin/ruby', 'dk.rb', 'init'])
         subprocess.check_call(['c:/ruby193/bin/ruby', 'dk.rb', 'install'])
         os.chdir(oldpath)
@@ -131,7 +133,7 @@ def clink():
             shutil.copy(fullname, 'C:\\Program Files\\ConEmu\\ConEmu\\clink')
 
 def gvim():
-    installer = 'https://bitbucket.org/djs/vim-win64/downloads/gvim73-772-win-amd64.exe'
+    installer = 'https://bitbucket.org/djs/vim-win64/downloads/gvim73-785-win-amd64.exe'
     f = urllib2.urlopen(installer)
     with open(os.path.basename(installer), "wb") as local_installer:
         local_installer.write(f.read())
@@ -146,7 +148,7 @@ def rapidee():
         local_installer.write(f.read())
     f.close()
 
-    subprocess.check_call([os.path.basename(installer), '/S'])
+    subprocess.check_call([os.path.basename(installer), '/VERYSILENT'])
 
 def ctags():
     f = urllib2.urlopen('http://downloads.sourceforge.net/project/ctags/ctags/5.8/ctags58.zip')
@@ -157,6 +159,15 @@ def ctags():
 
     with zipfile.ZipFile('ctags58.zip', 'r') as myzip:
         myzip.extract('ctags58/ctags.exe', os.path.expandvars('$MY_USER_BIN'))
+
+def notepad2():
+    installer = 'https://github.com/XhmikosR/notepad2-mod/releases/download/4.2.25.904/Notepad2-mod.4.2.25.904.exe'
+    f = urllib2.urlopen(installer)
+    with open(os.path.basename(installer), "wb") as local_installer:
+        local_installer.write(f.read())
+    f.close()
+
+    subprocess.check_call([os.path.basename(installer), '/VERYSILENT'])
 
 def fonts():
 
@@ -182,6 +193,14 @@ def fonts():
     for font in glob.glob('*.ttf'):
         install_font(font)
 
+def sdk():
+    installer = 'http://www.microsoft.com/click/services/Redirect2.ashx?CR_EAC=300135395'
+    f = urllib2.urlopen(installer)
+    with open('sdksetup.exe', "wb") as local_installer:
+        local_installer.write(f.read())
+    f.close()
+
+    subprocess.check_call(['sdksetup.exe'])
 
 def main():
     parser = argparse.ArgumentParser()
@@ -192,14 +211,15 @@ def main():
 
     if args.item == 'all':
         sevenzip()
-        ruby('exe')
-        ruby('sfx')
+        #ruby('exe')
+        #ruby('sfx')
         conemu()
         clink()
         gvim()
         rapidee()
         fonts()
         ctags()
+        notepad2()
     else:
         method = globals()[args.item]
         method()
